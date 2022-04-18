@@ -64,24 +64,25 @@ def grab_Image(flag,coordinatelist):
             # Convert the Retrieve image into Numpy array
             num_img = img.get_data()
             cv2.imshow("Original image", num_img)
-
-    if flag == 1:
-        image = sl.Mat()
-        depth = sl.Mat()
-        point_cloud = sl.Mat()
-        runtime_parameters = sl.RuntimeParameters()
-        if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-            # A new image is available if grab() returns sl.ERROR_CODE.SUCCESS
-            zed.retrieve_image(image, sl.VIEW.LEFT)  # Get the left image
-            zed.retrieve_measure(depth, sl.MEASURE.DEPTH) # Retrieve depth matrix. Depth is aligned on the left RGB image
-            zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA) # Retrieve colored point cloud
-            num_img = image.get_data()
-            cv2.imshow("Original image", num_img)
-            for i in range(len(coordinatelist)):
-                x=coordinatelist[i][0]
-                y=coordinatelist[i][-1]
-                depth_value = depth.get_value(x, y)
-                print("Distance to Camera at ({0}, {1}): {2} mm".format(x, y, depth_value))
+    
+    
+    # if flag == 1:
+    #     image = sl.Mat()
+    #     depth = sl.Mat()
+    #     point_cloud = sl.Mat()
+    #     runtime_parameters = sl.RuntimeParameters()
+    #     if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
+    #         # A new image is available if grab() returns sl.ERROR_CODE.SUCCESS
+    #         zed.retrieve_image(image, sl.VIEW.LEFT)  # Get the left image
+    #         zed.retrieve_measure(depth, sl.MEASURE.DEPTH) # Retrieve depth matrix. Depth is aligned on the left RGB image
+    #         zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA) # Retrieve colored point cloud
+    #         num_img = image.get_data()
+    #         cv2.imshow("Original image", num_img)
+    #         for i in range(len(coordinatelist)):
+    #             x=coordinatelist[i][0]
+    #             y=coordinatelist[i][-1]
+    #             depth_value = depth.get_value(x, y)
+    #             print("Distance to Camera at ({0}, {1}): {2} mm".format(x, y, depth_value))
 
     if cv2.waitKey(1) & 0XFF == ord('s'):
         cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles.png', num_img)
@@ -143,23 +144,6 @@ def template_matching(temp, w, h, previous_x, previous_y, coordlist):
     return coordlist
 
 
-# def get_depth(coordinatelist):
-#     image = sl.Mat()
-#     # depth = sl.Mat()
-#     # point_cloud = sl.Mat()
-#     runtime_parameters = sl.RuntimeParameters()
-#     if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-#         # A new image is available if grab() returns sl.ERROR_CODE.SUCCESS
-#         zed.retrieve_image(image, sl.VIEW.LEFT)  # Get the left image
-#         # zed.retrieve_measure(depth, sl.MEASURE.DEPTH) # Retrieve depth matrix. Depth is aligned on the left RGB image
-#         # zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA) # Retrieve colored point cloud
-#         num_img = image.get_data()
-#         cv2.imshow("Original image", num_img)
-#         # for i in range(len(coordinatelist)):
-#         #     x=coordinatelist[i][0]
-#         #     y=coordinatelist[i][-1]
-#         #     depth_value = depth.get_value(x, y)
-#         #     print("Distance to Camera at ({0}, {1}): {2} mm".format(x, y, depth_value))
 
 
 def main(args):
@@ -179,21 +163,22 @@ def main(args):
     bottle_coordinate_list = template_matching(temp, w, h, x_origin, y_origin, bottle_coordinate_list)
     print(bottle_coordinate_list)
 
-    initial_Camera()
-    while True:
-        # get_depth(bottle_coordinate_list)
-        grab_Image(flag,bottle_coordinate_list)
+    # initial_Camera()
+    # while flag==1:
+    #     grab_Image(flag,bottle_coordinate_list)
+    
+    
     # num_objects=str(len(bottle_coordinate_list))
     # mi_socket.send(num_objects.encode())
-    # Ask the robot to send the feedback from Robotsudio when one bottle is placed in the box
-    # for i in range(len(bottle_coordinate_list)):
-    #     for a in range(len(bottle_coordinate_list[i])):
-    #
-    #         print(str(bottle_coordinate_list[i][a]))
-    #         string=str(bottle_coordinate_list[i][a])
-    # #         #mi_socket.send(string.encode())
-    #         time.sleep(1.5)
-    #     print('Ready to grab next object? (Y/N)')
+    #Ask the robot to send the feedback from Robotsudio when one bottle is placed in the box
+    for i in range(len(bottle_coordinate_list)):
+        for a in range(len(bottle_coordinate_list[i])):
+
+            print(str(bottle_coordinate_list[i][a]))
+            string=str(bottle_coordinate_list[i][a])
+    #         #mi_socket.send(string.encode())
+            time.sleep(1.5)
+        print('Ready to grab next object? (Y/N)')
     #     #message=mi_socket.recv(1024)
         # if message.decode()=='Y':
         #     continue
