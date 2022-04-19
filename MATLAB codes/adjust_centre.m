@@ -6,7 +6,7 @@ classdef adjust_centre
     end
 
     methods
-        function obj = adjust_(centroid, picture_size)
+        function obj = adjust_centre(centroid, picture_size)
             obj.centre = centroid;
             obj.picture_size = picture_size;
         end
