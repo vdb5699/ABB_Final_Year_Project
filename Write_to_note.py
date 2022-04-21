@@ -15,3 +15,4 @@ class WriteToNote:
 
     def set_arr(self, array):
         self.content = array
+        #shit
