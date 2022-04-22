@@ -16,6 +16,37 @@ classdef send_data
             clear tcp
         end
 
+        function [brown red] = sortCap(caps)
+            if heihgt(caps) == 0
+                brown = []
+                red = []
+                return
+
+            else
+                redCapCount = 0;
+                brownCapCount = 0;
+                for x = 1:height(caps)
+                    if caps(x).colour == "red"
+                        redCapCount = redCapCount+1;
+                        red(redCapCount) = caps(x).centre
+                    elseif caps(x).colour == "brown"
+                        brownCapCount = brownCapCount+1;
+                        brown(brownCapCount) = caps(x).centre
+                    else
+                        
+                    end
+                end
+
+                if redCapCount == 0
+                    red = []
+                end
+                if brownCapCount == 0
+                    brown = []
+                end
+                return
+            end
+        end
+
         function setIP(obj, IP)
             obj.IP = IP;
         end

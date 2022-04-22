@@ -2,7 +2,7 @@ classdef photo_acquisition
     methods
         function img = takePhoto(resolution, camID)
             camera = webcam(camID);
-            camera.Resolution = "4416x1242";
+            camera.Resolution = resolution;
             preview(camera)
 
             prompt = "Press enter key to take photo";
