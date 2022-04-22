@@ -9,10 +9,12 @@ import time
 zed = sl.Camera()
 
 
-# mi_socket=socket.socket()
+mi_socket=socket.socket()
 # mi_socket.connect(("192.168.1.32",5000))
-# message=mi_socket.recv(1024)
-# print(message.decode())
+
+mi_socket.connect(("172.30.65.132",5000))
+message=mi_socket.recv(1024)
+print(message.decode())
 # Camera Configuration
 def initial_Camera():
     init_params = sl.InitParameters()
@@ -64,8 +66,8 @@ def grab_Image(flag,coordinatelist):
             # Convert the Retrieve image into Numpy array
             num_img = img.get_data()
             cv2.imshow("Original image", num_img)
-    
-    
+
+
     # if flag == 1:
     #     image = sl.Mat()
     #     depth = sl.Mat()
@@ -166,8 +168,8 @@ def main(args):
     # initial_Camera()
     # while flag==1:
     #     grab_Image(flag,bottle_coordinate_list)
-    
-    
+
+
     # num_objects=str(len(bottle_coordinate_list))
     # mi_socket.send(num_objects.encode())
     #Ask the robot to send the feedback from Robotsudio when one bottle is placed in the box
@@ -176,12 +178,12 @@ def main(args):
 
             print(str(bottle_coordinate_list[i][a]))
             string=str(bottle_coordinate_list[i][a])
-    #         #mi_socket.send(string.encode())
+            mi_socket.send(string.encode())
             time.sleep(1.5)
         print('Ready to grab next object? (Y/N)')
-    #     #message=mi_socket.recv(1024)
-        # if message.decode()=='Y':
-        #     continue
+        #message=mi_socket.recv(1024)
+        if message.decode()=='Y':
+            continue
     print('Program ended')
 
 
