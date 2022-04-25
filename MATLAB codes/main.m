@@ -1,5 +1,5 @@
 %  inputImage = imageDatastore('C:\Uni stuff\Project\Model image', 'FileExtensions', [".jfif"]);
- IP = "fhaifaifna";
+ IP = "172.16.44.240";
  port = 34322;
  ph = photo_acquisition();
  im = ph.takePhoto("4416x1242", 1);
