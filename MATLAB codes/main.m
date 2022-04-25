@@ -2,9 +2,10 @@
  IP = "172.16.44.240";
  port = 34322;
  ph = photo_acquisition();
- im = ph.takePhoto("3840x1080",1);
+ res = "2560x720"
+ im = ph.takePhoto(res,1);
 
- circleDet = circle_detection(im,66);
+ circleDet = circle_detection(im,36);
 % circleDet = circle_detection(im,80);
  cent = circleDet.detectCicle()
 
@@ -16,5 +17,5 @@
 
   sender = send_data(IP, port);
   [red, brown] = sender.sortCap(caps);
-
-  sender.send([red brown]);
+  sender.send(brown);
+  sender.send(red);
