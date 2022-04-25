@@ -2,7 +2,7 @@
  IP = "172.16.44.240";
  port = 34322;
  ph = photo_acquisition();
- im = ph.takePhoto("4416x1242", 1);
+ im = ph.takePhoto("3840x1080",1);
 
  circleDet = circle_detection(im,66);
 % circleDet = circle_detection(im,80);
