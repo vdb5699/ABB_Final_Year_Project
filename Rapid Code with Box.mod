@@ -3,6 +3,8 @@ MODULE ModuleTest
 	CONST robtarget pcam:=[[1185.19,-0.24,944.23+235],[0.00845023,-0.00281222,0.99995,-0.00451948],[0,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     PERS robtarget pobj:=[[571,712,979.5],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+9,9E+9,9E+9,9E+9,9E+9,9E+9]];
     CONST robtarget pcup:=[[1104.72,147.52,1030],[0.00841517,-0.00277237,0.99995,-0.00455974],[0,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget pbox:=[[X,Y,1227.5-248],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget hoverAboveBox:=[[X,Y,1227.5],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
     PERS tooldata gripper := [TRUE, [[0,0,248], [1,0,0,0]], [4.4, [0, 0, 50], [1, 0, 0, 0], 0, 0, 0]];
     VAR string num_objects;
@@ -78,9 +80,8 @@ MODULE ModuleTest
     ENDPROC
 	
 	PROC move2boxcoord()	!to put in bottles boxes
-        !need z of box
-        CONST robtarget pbox:=[[X,Y,1227.5-248],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-        CONST robtarget hoverAboveBox:=[[X,Y,1227.5-248],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+        !need X,Y from python and Z of box measured in real world
+        pbox:=[[X,Y,1227.5-248],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
         MoveJ hoverAboveBox,v50,fine,gripper;       !hovering above box coordinate
         MoveL Offs(pobj,0,0,-160),v50,fine,gripper; !lowering bottle down into box coordinate
         !openGripper;
