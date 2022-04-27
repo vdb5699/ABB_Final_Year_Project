@@ -34,6 +34,7 @@ MODULE ModuleTest
 !            receiveData;
 !            move2obj;
 !            move;
+!            move2boxcoord;
 !            SocketSend client,\Str :="Y";
 !            sum:=sum+1;
 !        ENDWHILE
@@ -74,13 +75,16 @@ MODULE ModuleTest
         MoveL Offs(pobj,0,0,-160),v50,fine,gripper; !Going to pick up bottle from cap
         !grab;
         MoveL Offs(pobj,0,0,160),v50,fine,gripper;  !Moving to: Hovering above bottle
-        MoveJ pcup,v200,fine,gripper;               !Moving to: Some specified pos
+        
+        ! DO NOT NEED:   
+        !MoveJ pcup,v200,fine,gripper;               !Moving to: Some specified pos
         waittime 1;
         !openGripper;                                   
     ENDPROC
 	
 	PROC move2boxcoord()	!to put in bottles boxes
-        !need X,Y from python and Z of box measured in real world
+        !need X,Y from computer vision and Z of box measured in real world
+        
         pbox:=[[X,Y,1227.5-248],[0.00509555,-0.00294276,-0.999978,0.00317152],[-1,-1,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
         MoveJ hoverAboveBox,v50,fine,gripper;       !hovering above box coordinate
         MoveL Offs(pobj,0,0,-160),v50,fine,gripper; !lowering bottle down into box coordinate
