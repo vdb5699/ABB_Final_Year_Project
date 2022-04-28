@@ -22,7 +22,7 @@ classdef send_data2
         end
 
         function [brown red] = sortCap(obj, caps)
-            if heihgt(caps) == 0
+            if width(caps) == 0
                 brown = []
                 red = []
                 return
@@ -30,7 +30,7 @@ classdef send_data2
             else
                 redCapCount = 0;
                 brownCapCount = 0;
-                for x = 1:height(caps)
+                for x = 1:width(caps)
                     if caps(x).colour == "Red"
                         redCapCount = redCapCount+1;
                         red(redCapCount,1) = caps(x).centre(1)
