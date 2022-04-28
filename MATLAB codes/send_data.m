@@ -26,10 +26,10 @@ classdef send_data
                 redCapCount = 0;
                 brownCapCount = 0;
                 for x = 1:height(caps)
-                    if caps(x).colour == "red"
+                    if caps(x).colour == "Red"
                         redCapCount = redCapCount+1;
                         red(redCapCount) = caps(x).centre
-                    elseif caps(x).colour == "brown"
+                    elseif caps(x).colour == "Brown"
                         brownCapCount = brownCapCount+1;
                         brown(brownCapCount) = caps(x).centre
                     else
