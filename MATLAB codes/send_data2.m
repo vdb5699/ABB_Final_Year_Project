@@ -3,18 +3,20 @@ classdef send_data2
     properties
         IP
         port
+        flag
     end
     methods
 
         function obj = send_data2(IP, port)
             obj.IP = IP;
             obj.port = port;
-            obj.flag = false
+            obj.flag = 0
         end
         function send(obj, data)
-            if flag == false
+            if obj.flag == 0
                 t = tcpip('192.168.0.20', 1025, 'NetworkRole', 'client');
                 fopen(t);
+                obj.flag = 1;
             end
             fwrite(t,data)
         end
