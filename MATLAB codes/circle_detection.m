@@ -25,7 +25,10 @@ classdef circle_detection
 %             obj.diameter = hypot(diffPos(1),diffPos(2))
             % diameter = 66;
             radius = round(obj.diameter/2);
-            [centresTemp, radii] = imfindcircles(obj.image,[radius-5 radius+5],'Sensitivity',0.90);
+            [centresTemp, radii] = imfindcircles(obj.image,[radius-5 radius+5],'Sensitivity',0.90,'EdgeThreshold', 0.05);
+%             [centres2, radiii] = imfindcircles(obj.image,[radius-10 radius+10],'Sensitivity',0.90, 'ObjectPolarity','dark','EdgeThreshold', 0.2);
+%             centresTemp = [centresTemp; centres2]
+%             radii = [radii; radiii]
             centres = round(centresTemp)
 
             imshow(obj.image)
