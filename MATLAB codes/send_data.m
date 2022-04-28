@@ -13,6 +13,7 @@ classdef send_data
         function send(obj, data)
             tcp = tcpclient(obj.IP,obj.port)
             write(tcp,data)
+            tcp.flush;
             clear tcp
         end
 
