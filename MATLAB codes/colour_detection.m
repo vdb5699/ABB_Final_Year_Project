@@ -17,8 +17,8 @@ classdef colour_detection
                 xPos = obj.centres(index,1)
                 yPos = obj.centres(index,2)
                 plot(xPos,yPos,'ro','MarkerSize', 30);
-                xStart = obj.centres(index,1)-2
-                xEnd = obj.centres(index,1)+2
+                xStart = obj.centres(index,1)-2;
+                xEnd = obj.centres(index,1)+2;
                 
                 yStart = obj.centres(index,2)-2;
                 yEnd = obj.centres(index,2)+2;
@@ -28,9 +28,9 @@ classdef colour_detection
                 for yCood = yStart:yEnd
                     for xCood = xStart:xEnd
                         [r,g,b] = obj.getColour(xCood,yCood);
-                        if (r <= 255 && r >= 170) && (g <= 255 && g >= 160) && (b <= 210 && b >= 70)
+                        if (r <= 255 && r >= 160) && (g <= 255 && g >= 150) && (b <= 220 && b >= 60)
                             goldCount = goldCount +1
-                        elseif (r >= 205 && g <= 50 && b <= 50) || (r >= 240 && g >= 240 && b >= 240)
+                        elseif (r >= 155 && g <= 100 && b <= 100) || (r >= 155 && g >= 155 && b >= 155)
                             redCount = redCount +1
                         else 
                             neither = neither +1
