@@ -16,7 +16,7 @@
  emp = empty_slot_detection(im);
  empltySlots = emp.detectSlot(100, 5000);
  imshow(im);
- sender = send_data(IP, port);
+ sender = send_data2(IP, port);
  [brown, red] = sender.sortCap(caps)
  a = num2str(height(brown)+height(red))
   sender.send(a)
