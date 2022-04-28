@@ -1,4 +1,4 @@
-classdef send_data
+classdef send_data2
 
     properties
         IP
@@ -6,17 +6,20 @@ classdef send_data
     end
     methods
 
-        function obj = send_data(IP, port)
+        function obj = send_data2(IP, port)
             obj.IP = IP;
             obj.port = port;
+            obj.flag = false
         end
         function send(obj, data)
-            tcp = tcpclient(obj.IP,obj.port)
-            write(tcp,data)
-            clear tcp
+            if flag == false
+                t = tcpip('192.168.0.20', 1025, 'NetworkRole', 'client');
+                fopen(t);
+            end
+            fwrite(t,data)
         end
 
-        function [brown red] = sortCap(caps)
+        function [brown red] = sortCap(obj, caps)
             if heihgt(caps) == 0
                 brown = []
                 red = []

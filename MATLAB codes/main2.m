@@ -16,24 +16,20 @@
  emp = empty_slot_detection(im);
  empltySlots = emp.detectSlot(100, 5000);
  imshow(im);
-  sender = send_data(IP, port);
-  [brown, red] = sender.sortCap(caps)
-  a = num2str(height(brown)+height(red))
+ sender = send_data(IP, port);
+ [brown, red] = sender.sortCap(caps)
+ a = num2str(height(brown)+height(red))
   sender.send(a)
   pause(0.5)
   for x = 1: height(brown)
-      prompt = "press enter to send x value"
-      %input(prompt)
       b = num2str(brown(x,1))
       sender.send(b);
       pause(0.5)
-      prompt = "press enter to send y value"
-      %input(prompt)
       c = num2str(brown(x,2))
       sender.send(c);
       pause(0.5)
   end
-
+  
   prompt = "press enter to send red cap coordinates"
   input(prompt)
 
@@ -47,7 +43,7 @@
   prompt = "press enter to send box coordinates"
   input(prompt)
   
-  for y = 1:height(emptySlots)
+   for y = 1:height(emptySlots)
     sender.send(num2str(empltySlots(x).centre(1)))
     pause(0.5)
     sender.send(num2str(empltySlots(x).centre(2)))
