@@ -20,7 +20,11 @@
   [brown, red] = sender.sortCap(caps)
   a = num2str(height(brown)+height(red))
   sender.send(a)
-  pause(0.5)
+  
+  prompt = "press enter to send brown cap coordinates"
+  input(prompt)
+
+
   for x = 1: height(brown)
       prompt = "press enter to send x value"
       %input(prompt)
