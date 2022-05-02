@@ -1,0 +1,77 @@
+MODULE Module1
+    CONST robtarget HomePos:=[[1018.612159322,0,1417.5],[0.5,0,0.866025404,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget CamPos:=[[944.999848818,0,900],[0.00000003,0,1,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget Obj:=[[41.418,4.9914,1375],[3E-8,0,1,0],[0,0,0,0],[9E+9,9E+9,9E+9,9E+9,9E+9,9E+9]];
+    CONST robtarget BottleTest:=[[944.999850498,0,1150.053051076],[0.000000057,0,1,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    VAR	socketdev serverSocket;
+	VAR	socketdev clientSocket;
+	VAR	string data;
+    VAR socketdev server;
+    VAR socketdev client;
+    VAR string num_objects;
+    VAR string x_coordinate;
+    VAR string y_coordinate;
+    VAR num num_objs;
+    VAR num X;
+    VAR num Y;
+    VAR num sum;
+    VAR bool objects;
+    VAR bool posx;
+    VAR bool posy;
+!***********************************************************
+    !
+    ! Module:  Module1
+    !
+    ! Description:
+    !   <Insert description here>
+    !
+    ! Author: vdb5699
+    !
+    ! Version: 1.0
+    !
+    !***********************************************************
+    
+    
+    !***********************************************************
+    !
+    ! Procedure main
+    !
+    !   This is the entry point of your program
+    !
+    !***********************************************************
+    PROC main() 
+!        MoveL HomePos,v100,fine,tool0\WObj:=wobj0;
+        !MoveL Camera,v100,fine,tool0\WObj:=wobj0;
+        !Connect to server
+        tcpip;
+        WHILE sum<num_objs DO
+            receiveData;
+            moveToObj;
+            SocketSend client,\Str :="Y";
+            sum:=sum+1;
+        ENDWHILE
+    ENDPROC
+    PROC tcpip()
+        SocketCreate server;
+        SocketBind server,"172.16.44.240", 5000;
+        SocketListen server;
+        SocketAccept server,client;
+        !Sending text to Vision Program
+        SocketSend client,\Str :="Executing Python program";
+        !Receiving number of detected object
+        SocketReceive client,\Str :=num_objects;
+        objects:=StrToVal(num_objects,num_objs);
+    ENDPROC
+    PROC receiveData()
+            SocketReceive client,\Str :=x_coordinate;
+            SocketReceive client,\Str :=y_coordinate;
+            posx :=StrToVal(x_coordinate,X);
+            posy := StrToVal(y_coordinate,Y);
+            Obj:=[[X,Y,1375.000047285],[0.00000003,0,1,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    ENDPROC
+    PROC moveToObj()
+        MoveJ Obj,v150,z100,tool0\WObj:=wobj0;
+    ENDPROC
+        
+    
+ENDMODULE
