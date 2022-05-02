@@ -1,0 +1,43 @@
+VAR socketdev server;
+    VAR socketdev client;
+    VAR string num_objects;
+    VAR string x_coordinate;
+    VAR string y_coordinate;
+    VAR num num_objs;
+    VAR num X;
+    VAR num Y;
+    VAR num sum;
+    VAR bool objects;
+    VAR bool posx;
+    VAR bool posy;
+    PROC main() 
+        !MoveL Home,v100,fine,tool0\WObj:=wobj0;
+        !MoveL Camera,v100,fine,tool0\WObj:=wobj0;
+        !Connect to server
+        tcpip;
+        WHILE sum<num_objs DO
+            receiveData;
+            moveToObj;
+            SocketSend client,\Str :="Y";
+            sum:=sum+1;
+        ENDWHILE
+    ENDPROC
+    PROC tcpip()
+        SocketCreate server;
+        SocketBind server,"192.168.1.32", 5000;
+        SocketListen server;
+        SocketAccept server,client;
+        !Sending text to Vision Program
+        SocketSend client,\Str :="Executing Python program";
+        !Receiving number of detected object
+        SocketReceive client,\Str :=num_objects;
+        objects:=StrToVal(num_objects,num_objs);
+    ENDPROC
+    PROC receiveData()
+            SocketReceive client,\Str :=x_coordinate;
+            SocketReceive client,\Str :=y_coordinate;
+            posx :=StrToVal(x_coordinate,X);
+            posy := StrToVal(y_coordinate,Y);
+    ENDPROC
+    PROC moveToObj()
+    ENDPROC
