@@ -30,7 +30,7 @@ classdef circle_detection
 %             centresTemp = [centresTemp; centres2]
 %             radii = [radii; radiii]
             centres = round(centresTemp)
-
+            fig1 = figure('Name','Detected caps');
             imshow(obj.image)
             dispImage = viscircles(centres,radii);
             hold on;
