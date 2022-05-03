@@ -28,9 +28,9 @@ classdef colour_detection
                 for yCood = yStart:yEnd
                     for xCood = xStart:xEnd
                         [r,g,b] = obj.getColour(xCood,yCood);
-                        if (r <= 255 && r >= 160) && (g <= 255 && g >= 150) && (b <= 220 && b >= 60)
+                        if (r <= 255 && r >= 195) && (g <= 255 && g >= 180) && (b <= 150)
                             goldCount = goldCount +1
-                        elseif (r >= 155 && g <= 100 && b <= 100) || (r >= 155 && g >= 155 && b >= 155)
+                        elseif (r >= 200) && (g <= 220 && g >= 60)&& (b >= 60 && b < 230)
                             redCount = redCount +1
                         else 
                             neither = neither +1
