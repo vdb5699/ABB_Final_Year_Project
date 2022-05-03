@@ -17,10 +17,11 @@ classdef empty_slot_detection
             %white and <= 100 will be black. The value would differ
             %depending on brightness of image.
             bIm = gray > brightness;
-            imshow(bIm)
+            fig2 = figure('Name','Empty slots')
+            imshow(obj.img)
+            hold on;
             %clear out small areas for better and easier detection
             bIm = bwareaopen(bIm,areaSize);
-            imshow(bIm)
             [labIm numOb] = bwlabel(bIm);
             blob = regionprops(labIm,'Perimeter','Area', 'Centroid');
 
