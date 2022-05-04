@@ -2,7 +2,9 @@
  IP = "192.168.0.20";
  port = 1025;
  ph = photo_acquisition();
- res = "2560x720"
+ res = "2560x720";
+ bP = [1280 720];
+ bR = [1227 690];
 
  im = ph.takePhoto(res,1);
 
@@ -23,9 +25,10 @@
   
   prompt = "press enter to send brown cap coordinates"
   input(prompt)
-
-
+  converter = convert_coord();
+  
   for x = 1: height(brown)
+      brown(x) = converter.toRealLife(brown(x,1),brown(x,2),bP,bR)
       prompt = "press enter to send x value"
       %input(prompt)
       b = num2str(brown(x,1))
@@ -42,6 +45,7 @@
   input(prompt)
 
   for y = 1:height(red)
+    red(x) = converter.toRealLife(red(x,1),red(x,2),bP,bR)
     sender.send(num2str(red(x,1)))
     pause(0.5)
     sender.send(num2str(red(x,2)))
