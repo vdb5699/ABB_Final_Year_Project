@@ -15,10 +15,9 @@ classdef convert_coord
             return
         end
 
-        function newCoord = toRobCoord(obj, x,y)
+        function [X, Y] = toRobCoord(obj, x,y)
             X = -y;
             Y = -x;
-            newCoord = [X Y];
             return 
         end
     end
