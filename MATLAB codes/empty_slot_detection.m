@@ -18,7 +18,7 @@ classdef empty_slot_detection
             %depending on brightness of image.
             bIm = gray > brightness;
             fig2 = figure('Name','Empty slots')
-            imshow(obj.img)
+            imshow(obj.image)
             hold on;
             %clear out small areas for better and easier detection
             bIm = bwareaopen(bIm,areaSize);
