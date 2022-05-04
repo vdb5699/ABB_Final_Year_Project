@@ -1,0 +1,55 @@
+IP = "192.168.0.20";
+port = 5000;
+
+data1 = '3';
+
+data2 = ['200' '400']
+
+data3 = ['600' '700']
+
+data4 = ['800' '900']
+data2(1:3)
+data2(4:6)
+data3(1:3)
+data3(4:6)
+data4(1:3)
+data4(4:6)
+tcp = tcpclient(IP,port)
+pause(5)
+test = read(tcp)
+
+if char(test) == "Executing Python program"
+    disp(char(test))
+end
+
+prompt = 'enter to send data1';
+input(prompt);
+tcp.write(data1);
+
+prompt = 'enter to send data2(1)';
+input(prompt);
+
+tcp.write(data2(1:3));
+prompt = 'enter to send data2(2)';
+input(prompt);
+tcp.write(data2(4:6));
+tcp.flush();
+prompt = 'enter to send data3(1)';
+input(prompt);
+
+tcp.write(data3(1:3));
+
+prompt = 'enter to send data3(2)';
+input(prompt);
+
+tcp.write(data3(4:6));
+tcp.flush();
+prompt = 'enter to send data4(1)';
+input(prompt);
+tcp.write(data4(1:3));
+
+prompt = 'enter to send data4(2)';
+input(prompt);
+
+tcp.write(data4(4:6));
+tcp.flush();
