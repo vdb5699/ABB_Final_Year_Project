@@ -3,18 +3,22 @@ classdef send_data
     properties
         IP
         port
+        flag
     end
     methods
 
         function obj = send_data(IP, port)
             obj.IP = IP;
             obj.port = port;
+            obj.flag = 0;
         end
         function send(obj, data)
-            tcp = tcpclient(obj.IP,obj.port)
+            if obj.flag == 0
+                tcp = tcpclient(obj.IP,obj.port)
+                obj.flag = 1;
+            end
             write(tcp,data)
             tcp.flush;
-            clear tcp
         end
 
         function [brown red] = sortCap(obj, caps)
