@@ -40,6 +40,7 @@
       %input(prompt)
       c = num2str(brown(x,2))
       tcp.write(c)
+      tcp.flush();
       pause(0.5)
   end
 
@@ -49,8 +50,10 @@
   for y = 1:height(red)
     red(x) = converter.toRealLife(red(x,1),red(x,2),bP,bR)
     tcp.write(num2str(red(x,1)))
+    tcp.flush();
     pause(0.5)
     tcp.write(num2str(red(x,2)))
+    tcp.flush();
     pause(0.5)
   end
 
@@ -59,8 +62,10 @@
   
   for y = 1:height(emptySlots)
     tcp.write(num2str(empltySlots(x).centre(1)))
+    tcp.flush();
     pause(0.5)
     tcp.write(num2str(empltySlots(x).centre(2)))
+    tcp.flush();
     pause(0.5)
   end
 
