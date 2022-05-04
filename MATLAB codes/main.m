@@ -8,6 +8,7 @@
 
  im = ph.takePhoto(res,1);
 
+ %diameter will be changed soon
  circleDet = circle_detection(im,35);
 % circleDet = circle_detection(im,80);
  cent = circleDet.detectCicle()
@@ -19,9 +20,10 @@
  empltySlots = emp.detectSlot(100, 5000);
  imshow(im);
   sender = send_data(IP, port);
+  tcp = tcpclient(IP,port);
   [brown, red] = sender.sortCap(caps)
   a = num2str(height(brown)+height(red))
-  sender.send(a)
+  tcp.write(a)
   
   prompt = "press enter to send brown cap coordinates"
   input(prompt)
@@ -32,12 +34,12 @@
       prompt = "press enter to send x value"
       %input(prompt)
       b = num2str(brown(x,1))
-      sender.send(b);
+      tcp.write(b)
       pause(0.5)
       prompt = "press enter to send y value"
       %input(prompt)
       c = num2str(brown(x,2))
-      sender.send(c);
+      tcp.write(c)
       pause(0.5)
   end
 
@@ -46,9 +48,9 @@
 
   for y = 1:height(red)
     red(x) = converter.toRealLife(red(x,1),red(x,2),bP,bR)
-    sender.send(num2str(red(x,1)))
+    tcp.write(num2str(red(x,1)))
     pause(0.5)
-    sender.send(num2str(red(x,2)))
+    tcp.write(num2str(red(x,2)))
     pause(0.5)
   end
 
@@ -56,9 +58,9 @@
   input(prompt)
   
   for y = 1:height(emptySlots)
-    sender.send(num2str(empltySlots(x).centre(1)))
+    tcp.write(num2str(empltySlots(x).centre(1)))
     pause(0.5)
-    sender.send(num2str(empltySlots(x).centre(2)))
+    tcp.write(num2str(empltySlots(x).centre(2)))
     pause(0.5)
   end
 
