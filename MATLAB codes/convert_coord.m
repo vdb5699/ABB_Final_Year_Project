@@ -14,5 +14,12 @@ classdef convert_coord
             newCoord = obj.adjuster.calculateCoord([rX, rY],bR);
             return
         end
+
+        function newCoord = toRobCoord(obj, x,y)
+            X = -y;
+            Y = -x;
+            newCoord = [X Y];
+            return 
+        end
     end
 end
