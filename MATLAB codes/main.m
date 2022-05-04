@@ -30,7 +30,7 @@
   converter = convert_coord();
   
   for x = 1: height(brown)
-      brown(x) = converter.toRealLife(brown(x,1),brown(x,2),bP,bR)
+      [brown(x,1), brown(x,2)] = converter.toRealLife(brown(x,1),brown(x,2),bP,bR)
       prompt = "press enter to send x value"
       %input(prompt)
       b = num2str(brown(x,1))
@@ -48,11 +48,11 @@
   input(prompt)
 
   for y = 1:height(red)
-    red(x) = converter.toRealLife(red(x,1),red(x,2),bP,bR)
-    tcp.write(num2str(red(x,1)))
+    [red(y,1), red(y,2)] = converter.toRealLife(red(y,1),red(y,2),bP,bR)
+    tcp.write(num2str(red(y,1)))
     tcp.flush();
     pause(0.5)
-    tcp.write(num2str(red(x,2)))
+    tcp.write(num2str(red(y,2)))
     tcp.flush();
     pause(0.5)
   end
@@ -60,11 +60,11 @@
   prompt = "press enter to send box coordinates"
   input(prompt)
   
-  for y = 1:height(emptySlots)
-    tcp.write(num2str(empltySlots(x).centre(1)))
+  for z = 1:height(emptySlots)
+    tcp.write(num2str(empltySlots(z).centre(1)))
     tcp.flush();
     pause(0.5)
-    tcp.write(num2str(empltySlots(x).centre(2)))
+    tcp.write(num2str(empltySlots(z).centre(2)))
     tcp.flush();
     pause(0.5)
   end
