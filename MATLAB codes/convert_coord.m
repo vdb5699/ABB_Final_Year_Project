@@ -8,10 +8,11 @@ classdef convert_coord
             obj.adjuster = adjust_centre();
         end
 
-        function newCoord = toRealLife(obj,pX,pY,bP,bR)
+        function [x, y] = toRealLife(obj,pX,pY,bP,bR)
             rX = (pX/bP(1))*bR(1);
             rY = (pY/bP(2))*bR(2);
-            newCoord = obj.adjuster.calculateCoord([rX, rY],bR);
+            coord = obj.adjuster.calculateCoord([rX, rY],bR);
+            [x, y] = toRobCoord(obj,coord(1),coord(2));
             return
         end
 
