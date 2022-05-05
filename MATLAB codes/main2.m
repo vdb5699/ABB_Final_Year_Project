@@ -1,52 +1,33 @@
-%  inputImage = imageDatastore('C:\Uni stuff\Project\Model image', 'FileExtensions', [".jfif"]);
- IP = "192.168.0.20";
- port = 1025;
- ph = photo_acquisition();
- res = "2560x720"
+IP = "192.168.0.20";
+port = 1025; 
 
- im = ph.takePhoto(res,1);
+bP = [1280 720];
+ bR = [1227 690];
+pp = [375 334];
 
- circleDet = circle_detection(im,35);
-% circleDet = circle_detection(im,80);
- cent = circleDet.detectCicle()
+a = convert_coord()
+[x, y] = a.toRealLife(pp(1), pp(2), bP, bR)
 
- colDet = colour_detection(cent,im);
- caps = colDet.detectColour()
+%%
+intri = cameraIntrinsics([536.24 536.18], [638.09 342.0275], [1280 720],"RadialDistortion",[-0.0486 0.0194]);
+k1 = -0.0486
+k2 = 0.0194
+% k3 = -0.0081
+radialDist = [k1 k2];
+t = intri.IntrinsicMatrix';
+camP = cameraParameters('IntrinsicMatrix',intri.IntrinsicMatrix, 'RadialDistortion',radialDist, TangentialDistortion=[-0.0002 -0.0001]);
 
- emp = empty_slot_detection(im);
- empltySlots = emp.detectSlot(100, 5000);
- imshow(im);
- sender = send_data2(IP, port);
- [brown, red] = sender.sortCap(caps)
- a = num2str(height(brown)+height(red))
-  sender.send(a)
-  pause(0.5)
-  for x = 1: height(brown)
-      b = num2str(brown(x,1))
-      sender.send(b);
-      pause(0.5)
-      c = num2str(brown(x,2))
-      sender.send(c);
-      pause(0.5)
-  end
-  
-  prompt = "press enter to send red cap coordinates"
-  input(prompt)
+res = "2560x720";
+a = photo_acquisition()
+I = a.takePhoto(res,1);
+[J or] = undistortImage(I,camP,OutputView="full");
+b = figure;
+imshow(J);
+c = figure;
+imshow(I);
 
-  for y = 1:height(red)
-    sender.send(num2str(red(x,1)))
-    pause(0.5)
-    sender.send(num2str(red(x,2)))
-    pause(0.5)
-  end
-
-  prompt = "press enter to send box coordinates"
-  input(prompt)
-  
-   for y = 1:height(emptySlots)
-    sender.send(num2str(empltySlots(x).centre(1)))
-    pause(0.5)
-    sender.send(num2str(empltySlots(x).centre(2)))
-    pause(0.5)
-  end
+%%
+Z = (536.24*0.029)/(66)
+X = ((358-638.09)*Z)/536.24
+Y = ((477 - 342.0275)*Z)/536.18
 
