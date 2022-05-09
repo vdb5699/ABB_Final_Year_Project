@@ -1,5 +1,5 @@
-MODULE Module1
-    !Constant position (Please Do not Change it)
+MODULE MainModule
+	 !Constant position (Please Do not Change it)
     CONST robtarget Home:=[[1018.612159322,0,1417.5],[0.5,0,0.866025404,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget CameraPos:=[[888.647981627,-3.101979233,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget moveToBoxAbv:=[[0,945,1375],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -10,14 +10,22 @@ MODULE Module1
     CONST robtarget sryupMoveToBoxPos4:=[[0,835,745],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget sryupMoveToBoxPos5:=[[110,835,745],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget sryupMoveToBoxPos6:=[[220,835,745],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    !Position for placing Coke in the box
+    CONST robtarget cokeMoveToBoxPos1:=[[0,945,700],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget cokeMoveToBoxPos2:=[[110,945,700],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget cokeMoveToBoxPos3:=[[220,945,700],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget cokeMoveToBoxPos4:=[[0,835,700],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget cokeMoveToBoxPos5:=[[110,835,700],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget cokeMoveToBoxPos6:=[[220,835,700],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !ADD 154mm along x and Minus 15.5 along y (Move gripper to Camera focal position)
     CONST robtarget GripperInitPos:=[[1042.647981627,-18.60197923,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     !Variable position (Set orgin position as GripperIniPos)
-    PERS robtarget ObjAbovePos:=[[1122.61,114.848,1192.53],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget Grabobj:=[[1122.61,114.848,1135],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    
-    
+    !Syrup
+    PERS robtarget ObjAbovePos:=[[1063.4,-144.991,1192.53],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget GrabSyrupPos:=[[1152.21,194.201,1135],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    !Coke
+    PERS robtarget GrabCokePos:=[[1063.4,-144.991,1080],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     !Initialise Variable
     VAR	socketdev serverSocket;
@@ -28,6 +36,7 @@ MODULE Module1
     VAR string num_objects;
     VAR string x_coordinate;
     VAR string y_coordinate;
+    VAR string colour;
     VAR num num_objs;
     VAR num X;
     VAR num Y;
@@ -38,40 +47,37 @@ MODULE Module1
     VAR string dummy;
     
     PROC main()
-!        tcpip;
-
-
-!Grab One bottle up and place it in box and return to homepos
+        
         moveToHome;
         moveToCameraPos;
-        moveGipperToCameraPos;
-        testpos;
-        moveToObjAbove;
-        ObjPos;
-        open_gripper;
-        close_gripper;
-        moveToObjAbove;
-        !Need to adjust the height of robot to avoid any collision 
-        moveToCameraPos;
-        MoveL moveToBoxAbv,v100,fine,tool0\WObj:=wobj0;
-        MoveL sryupMoveToBoxPos1,v100,fine,tool0\WObj:=wobj0;
-        open_gripper;
-        MoveL moveToBoxAbv,v100,fine,tool0\WObj:=wobj0;
-        moveToHome;
+        tcpip;
+        Waittime 3;
+        WHILE sum<num_objs DO
+           
+            !Grabing object
+            receiveData;
+            
+            !Gripper function
+            moveToHome;
+            boxAbvpos;
+            placeBottle2box;
+            boxAbvpos;
+            moveToCameraPos;
+            SocketSend client,\Str :="Y";
+            sum:=sum+1;
+        ENDWHILE
+        SocketClose server;
+
+        
 
 
-!        WHILE sum<num_objs DO
-!            receiveData;
-!            moveToObj;
-!            SocketSend client,\Str :="Y";
-!            sum:=sum+1;
-!        ENDWHILE
-!        SocketClose server;
+
+!        
     ENDPROC
     
     PROC tcpip()
         SocketCreate server;
-        SocketBind server,"192.168.0.20", 5000;
+        SocketBind server,"192.168.0.20", 1025;
         !SocketBind server,"172.16.44.240", 5000;
         SocketListen server;
         SocketAccept server,client;
@@ -82,53 +88,105 @@ MODULE Module1
         objects:=StrToVal(num_objects,num_objs);
     ENDPROC
     PROC receiveData()
-            SocketReceive client,\Str :=x_coordinate;
-            posx :=StrToVal(x_coordinate,X);
-            SocketReceive client,\Str :=y_coordinate;
-            posy := StrToVal(y_coordinate,Y);
-            ObjAbovePos:=[[1042.647981627+X,-18.60197923+Y,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-            Grabobj:=[[1042.647981627+X,-18.60197923+Y,1135],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+        SocketReceive client,\Str :=colour;
+
+        SocketReceive client,\Str :=x_coordinate;
+        posx :=StrToVal(x_coordinate,X);
+        SocketReceive client,\Str :=y_coordinate;
+        posy := StrToVal(y_coordinate,Y);
+        ObjAbovePos:=[[1042.647981627+X,-18.60197923+Y,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+        moveToObjAbove;
+        IF colour ="B" THEN
+             GrabSyrupPos:=[[1042.647981627+X,-18.60197923+Y,1135],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+             grabSyrup;
+        else if colour ="R" 
+             grabCokePos:=[[1042.647981627+X,-18.60197923+Y,1080],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+             grabCoke;
+        ENDIF 
+       
     ENDPROC
     
     !Testing Position 
-    PROC testpos()
-        ObjAbovePos:=[[1042.647981627+79.96,-18.60197923+133.4498,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-        Grabobj:=[[1042.647981627+79.96,-18.60197923+133.4498,1135],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    ENDPROC
+!    PROC testpos()
+!        ObjAbovePos:=[[1042.647981627+104.36,-18.60197923+135.6461,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+!        GrabSyrupPos:=[[1042.647981627+104.36,-18.60197923+135.6461,1135],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+!        grabCokePos:=[[1042.647981627+8.85,-18.60197923+203.099,1080],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+!    ENDPROC
     
     PROC moveToHome()
-         MoveL Home,v150,fine,tool0\WObj:=wobj0;
+         MoveL Home,v200,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveToCameraPos()
-        MoveL CameraPos,v100,fine,tool0\WObj:=wobj0;
+        MoveL CameraPos,v150,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveGipperToCameraPos()
-        MoveL GripperInitPos,v100,fine,tool0\WObj:=wobj0;
+        MoveL GripperInitPos,v150,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveToObjAbove()
-        MoveL ObjAbovePos,v100,fine,tool0\WObj:=wobj0;
+        MoveL ObjAbovePos,v150,fine,tool0\WObj:=wobj0;
     ENDPROC
     
-    PROC ObjPos()
-        MoveL Grabobj,v50,fine,tool0\WObj:=wobj0;
+    PROC grabSyrup()
+        MoveL GrabSyrupPos,v50,fine,tool0\WObj:=wobj0;
     ENDPROC
     
-    PROC open_gripper()        
-        SetDO DO10_2, 1;
-        Waittime 3;
-        SetDO DO10_2, 0;
-        Waittime 1;
+    PROC grabCoke()
+        MoveL GrabCokePos,v50,fine,tool0\WObj:=wobj0;
+    ENDPROC
+    
+    PROC boxAbvpos()
+        MoveL moveToBoxAbv,v200,fine,tool0\WObj:=wobj0;
+    ENDPROC
+    
+    PROC placeBottle2box()
+        IF colour = "B" THEN
+            IF sum = 0 THEN
+                MoveL sryupMoveToBoxPos1,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =1 THEN
+                MoveL sryupMoveToBoxPos2,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =2 THEN
+                MoveL sryupMoveToBoxPos3,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =3 THEN
+                MoveL sryupMoveToBoxPos4,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =4 THEN
+                MoveL sryupMoveToBoxPos5,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =5 THEN
+                MoveL sryupMoveToBoxPos6,v50,fine,tool0\WObj:=wobj0;
+            ENDIF
+        ENDIF
+        IF colour = "R" THEN
+            IF sum = 0 THEN
+                MoveL cokeMoveToBoxPos1,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =1 THEN
+                MoveL cokeMoveToBoxPos2,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =2 THEN
+                MoveL cokeMoveToBoxPos3,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =3 THEN
+                MoveL cokeMoveToBoxPos4,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =4 THEN
+                MoveL cokeMoveToBoxPos5,v50,fine,tool0\WObj:=wobj0;
+            ELSEIF sum =5 THEN
+                MoveL cokeMoveToBoxPos6,v50,fine,tool0\WObj:=wobj0;
+            ENDIF
+        ENDIF
+            
+    ENDPROC
+!    PROC open_gripper()        
+!        SetDO DO10_2, 1;
+!        Waittime 3;
+!        SetDO DO10_2, 0;
+!        Waittime 1;
         
-     ENDPROC
+!     ENDPROC
 
-    PROC close_gripper()       
-        SetDO DO10_1, 1;
-        Waittime 3;
-        SetDO DO10_1, 0;
-        Waittime 1;
+!    PROC close_gripper()       
+!        SetDO DO10_1, 1;
+!        Waittime 3;
+!        SetDO DO10_1, 0;
+!        Waittime 1;
         
-    ENDPROC
+!    ENDPROC
 ENDMODULE
