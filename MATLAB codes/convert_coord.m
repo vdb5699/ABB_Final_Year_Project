@@ -15,7 +15,22 @@ classdef convert_coord
             [x, y] = toRobCoord(obj,coord(1),coord(2));
             return
         end
+        
+        function [X, Y] = convertRed(obj, x, y)
+            Xtemp = ((0.0491*x)-34.598)*10;
+            Ytemp = ((-0.0496*y)+17.501)*10;
 
+            [X, Y] = toRobCoord(obj, Xtemp, Ytemp);
+            return
+        end
+        
+        function [X, Y] = convertBrown(obj, x, y)
+            Ytemp = ((-0.04*y)+14.236)*10;
+            Xtemp = (x-730.53846)/24.91863)*10;
+            
+            [X, Y] = toRobCoord(obj, Xtemp, Ytemp);
+            return             
+        end
         function [X, Y] = toRobCoord(obj, x,y)
             X = -y;
             Y = -x;
