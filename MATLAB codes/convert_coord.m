@@ -33,7 +33,7 @@ classdef convert_coord
         end
         function [X, Y] = toRobCoord(obj, x,y)
             X = -y;
-            Y = -x;
+            Y = x;
             return 
         end
     end
