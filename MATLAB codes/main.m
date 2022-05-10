@@ -94,7 +94,7 @@
         if char(test) == "Y" && y < height(red)
             disp("data received, moving on")
             flag = 1;
-        else
+        elseif char(test) = "Y"
             disp("That was the last coordinate, ending the program :)")
             flag = 1;
         end
