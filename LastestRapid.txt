@@ -34,11 +34,11 @@ MODULE MainModule
     
     !Variable position (Set orgin position as GripperIniPos)
     !Syrup
-    PERS robtarget ObjAbovePos:=[[1086.71,-81.6306,1192.53],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget GrabSyrupPos:=[[995.808,-142.266,1135],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget ObjAbovePos:=[[1138.79,-29.5943,1192.53],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget GrabSyrupPos:=[[963.808,0.925022,1135],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Coke
-    PERS robtarget GrabCokePos:=[[1086.71,-81.6306,1080],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget aboveCameraPos:=[[1086.71,-81.6306,1492],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget GrabCokePos:=[[1138.79,-29.5943,1080],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget aboveCameraPos:=[[1138.79,-29.5943,1492],[0.00436311,0.00610856,-0.999972,-4.1884E-05],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Initialise Variable
     VAR	socketdev serverSocket;
 	VAR	socketdev clientSocket;
@@ -89,7 +89,8 @@ MODULE MainModule
             SocketSend client,\Str :="Y";
             sum:=sum+1;
         ENDWHILE
-        SocketClose server; 
+        SocketClose server;
+        moveToHome;
     ENDPROC
     
     PROC tcpip()
@@ -159,11 +160,11 @@ MODULE MainModule
     ENDPROC
     
     PROC grabSyrup()
-        MoveL GrabSyrupPos,v50,fine,tool0\WObj:=wobj0;
+        MoveL GrabSyrupPos,v100,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC grabCoke()
-        MoveL GrabCokePos,v50,fine,tool0\WObj:=wobj0;
+        MoveL GrabCokePos,v100,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC boxAbvpos()
@@ -174,43 +175,43 @@ MODULE MainModule
         IF colour = "B" THEN
             IF syrup_counter = 1 THEN
                 MoveL abovesryupMoveToBoxPos1,v200,fine,tool0\WObj:=wobj0;
-                MoveL sryupMoveToBoxPos1,v50,fine,tool0\WObj:=wobj0;
+                MoveL sryupMoveToBoxPos1,v100,fine,tool0\WObj:=wobj0;
             ELSEIF syrup_counter =2 THEN
                 MoveL abovesryupMoveToBoxPos2,v200,fine,tool0\WObj:=wobj0;
-                MoveL sryupMoveToBoxPos2,v50,fine,tool0\WObj:=wobj0;
+                MoveL sryupMoveToBoxPos2,v100,fine,tool0\WObj:=wobj0;
             ELSEIF syrup_counter =3 THEN
                 MoveL abovesryupMoveToBoxPos3,v200,fine,tool0\WObj:=wobj0;
-                MoveL sryupMoveToBoxPos3,v50,fine,tool0\WObj:=wobj0;
+                MoveL sryupMoveToBoxPos3,v100,fine,tool0\WObj:=wobj0;
             ELSEIF syrup_counter =4 THEN
                 MoveL abovesryupMoveToBoxPos4,v200,fine,tool0\WObj:=wobj0;
-                MoveL sryupMoveToBoxPos4,v50,fine,tool0\WObj:=wobj0;
+                MoveL sryupMoveToBoxPos4,v100,fine,tool0\WObj:=wobj0;
             ELSEIF syrup_counter =5 THEN
                 MoveL abovesryupMoveToBoxPos5,v200,fine,tool0\WObj:=wobj0;
-                MoveL sryupMoveToBoxPos5,v50,fine,tool0\WObj:=wobj0;
+                MoveL sryupMoveToBoxPos5,v100,fine,tool0\WObj:=wobj0;
             ELSEIF syrup_counter =6 THEN
                 MoveL abovesryupMoveToBoxPos6,v200,fine,tool0\WObj:=wobj0;
-                MoveL sryupMoveToBoxPos6,v50,fine,tool0\WObj:=wobj0;
+                MoveL sryupMoveToBoxPos6,v100,fine,tool0\WObj:=wobj0;
             ENDIF
         ENDIF
         IF colour = "R" THEN
             IF coke_counter = 1 THEN
                 MoveL abovecokeMoveToBoxPos1,v200,fine,tool0\WObj:=wobj0;
-                MoveL cokeMoveToBoxPos1,v50,fine,tool0\WObj:=wobj0;
+                MoveL cokeMoveToBoxPos1,v100,fine,tool0\WObj:=wobj0;
             ELSEIF coke_counter =2 THEN
                 MoveL abovecokeMoveToBoxPos2,v200,fine,tool0\WObj:=wobj0;
-                MoveL cokeMoveToBoxPos2,v50,fine,tool0\WObj:=wobj0;
+                MoveL cokeMoveToBoxPos2,v100,fine,tool0\WObj:=wobj0;
             ELSEIF coke_counter =3 THEN
                 MoveL abovecokeMoveToBoxPos3,v200,fine,tool0\WObj:=wobj0;
-                MoveL cokeMoveToBoxPos3,v50,fine,tool0\WObj:=wobj0;
+                MoveL cokeMoveToBoxPos3,v100,fine,tool0\WObj:=wobj0;
             ELSEIF coke_counter =4 THEN
                 MoveL abovecokeMoveToBoxPos4,v200,fine,tool0\WObj:=wobj0;
-                MoveL cokeMoveToBoxPos4,v50,fine,tool0\WObj:=wobj0;
+                MoveL cokeMoveToBoxPos4,v100,fine,tool0\WObj:=wobj0;
             ELSEIF coke_counter =5 THEN
                 MoveL abovecokeMoveToBoxPos5,v200,fine,tool0\WObj:=wobj0;
-                MoveL cokeMoveToBoxPos5,v50,fine,tool0\WObj:=wobj0;
+                MoveL cokeMoveToBoxPos5,v100,fine,tool0\WObj:=wobj0;
             ELSEIF coke_counter =6 THEN
                 MoveL abovecokeMoveToBoxPos6,v200,fine,tool0\WObj:=wobj0;
-                MoveL cokeMoveToBoxPos6,v50,fine,tool0\WObj:=wobj0;
+                MoveL cokeMoveToBoxPos6,v100,fine,tool0\WObj:=wobj0;
             ENDIF
         ENDIF
             
