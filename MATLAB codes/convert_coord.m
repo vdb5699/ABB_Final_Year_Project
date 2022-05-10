@@ -34,19 +34,12 @@ classdef convert_coord
         function [X, Y] = toRobCoord(obj, x,y)
             X = y;
             Y = -x;
-            
+
             if Y < 0
-                if Y < -100
-                    Y = Y - 5;
-                else
-                    Y = Y - 1.5;
-                end
+                Y = Y - (0.000127*Y*Y);
             elseif Y > 0 
-                if Y > 100
-                    Y = Y + 5;
-                else
-                    Y = Y + 1.5;
-                end
+                Y = Y + (0.000127*Y*Y);
+            end
             return 
         end
     end
