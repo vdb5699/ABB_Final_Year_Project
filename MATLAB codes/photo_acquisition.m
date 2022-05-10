@@ -3,7 +3,7 @@ classdef photo_acquisition
         function img = takePhoto(obj, resolution, camID)
             camera = webcam(camID);
             camera.Resolution = resolution;
-            [height width channels] = size(snapshot(camera))
+            [height width channels] = size(snapshot(camera));
             % preview(camera)
 
             prompt = "Press enter key to take photo";
