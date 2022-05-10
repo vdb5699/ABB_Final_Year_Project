@@ -41,14 +41,14 @@
       pause(3)
       [brown(x,1), brown(x,2)] = converter.convertBrown(brown(x,1),brown(x,2));
       xcoord = num2str(brown(x,1));
-      msg = ['sending x value: ',xcoord]
+      msg = ['sending x value: ',xcoord];
       disp(msg);
       tcp.write(xcoord)
       tcp.flush()
       pause(3)
         
       ycoord = num2str(brown(x,2));
-      msg = ['sending y value: ',ycoord]
+      msg = ['sending y value: ',ycoord];
       disp(msg);
       tcp.write(ycoord)
       tcp.flush()
@@ -75,14 +75,14 @@
     [red(y,1), red(y,2)] = converter.convertRed(red(y,1),red(y,2))
 
     xcoord = num2str(red(y,1));
-    msg = ['sending x value: ',xcoord]
+    msg = ['sending x value: ',xcoord];
     disp(msg);
     tcp.write(xcoord)
     tcp.flush()
     pause(3)
 
     ycoord = num2str(red(y,2));
-    msg = ['sending y value: ',ycoord]
+    msg = ['sending y value: ',ycoord];
     disp(msg);
     tcp.write(ycoord)
     tcp.flush()
