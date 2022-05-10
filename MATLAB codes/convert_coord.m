@@ -26,14 +26,14 @@ classdef convert_coord
         
         function [X, Y] = convertBrown(obj, x, y)
             Ytemp = ((-0.04*y)+14.236)*10;
-            Xtemp = (x-730.53846)/24.91863)*10;
+            Xtemp = ((x-730.53846)/24.91863)*10;
             
             [X, Y] = toRobCoord(obj, Xtemp, Ytemp);
             return             
         end
         function [X, Y] = toRobCoord(obj, x,y)
-            X = -y;
-            Y = x;
+            X = y;
+            Y = -x;
             return 
         end
     end
