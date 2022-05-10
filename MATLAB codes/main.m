@@ -37,22 +37,22 @@
   for x = 1: height(brown)
       flag = 0;
       tcp.write('B')
-      tcp.flush();
+      tcp.flush()
       pause(3)
       [brown(x,1), brown(x,2)] = converter.convertBrown(brown(x,1),brown(x,2));
-      xcoord = num2str(brown(x,1))
+      xcoord = num2str(brown(x,1));
       msg = ['sending x value: ',xcoord]
       disp(msg);
-      tcp.write(a);
-      tcp.flush();
-      pause(3);
+      tcp.write(xcoord)
+      tcp.flush()
+      pause(3)
         
-      ycoord = num2str(brown(x,2))
+      ycoord = num2str(brown(x,2));
       msg = ['sending y value: ',ycoord]
       disp(msg);
-      tcp.write(b);
-      tcp.flush();
-      pause(3);
+      tcp.write(ycoord)
+      tcp.flush()
+      pause(3)
       
       disp("waiting for robot to place the bottle");
       while flag == 0
@@ -74,18 +74,18 @@
     pause(3)
     [red(y,1), red(y,2)] = converter.convertRed(red(y,1),red(y,2))
 
-    xcoord = num2str(red(y,1))
+    xcoord = num2str(red(y,1));
     msg = ['sending x value: ',xcoord]
     disp(msg);
-    tcp.write(c)
-    tcp.flush();
+    tcp.write(xcoord)
+    tcp.flush()
     pause(3)
 
-    ycoord = num2str(red(y,2))
+    ycoord = num2str(red(y,2));
     msg = ['sending y value: ',ycoord]
     disp(msg);
-    tcp.write(d)
-    tcp.flush();
+    tcp.write(ycoord)
+    tcp.flush()
     pause(3)
 
     disp("waiting for robot to place the bottle");
