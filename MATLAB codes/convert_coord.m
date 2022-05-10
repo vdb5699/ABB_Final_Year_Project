@@ -34,6 +34,12 @@ classdef convert_coord
         function [X, Y] = toRobCoord(obj, x,y)
             X = y;
             Y = -x;
+            
+            if Y < 0
+                Y = Y - 1.5;
+            elseif Y > 0 
+                Y = Y + 1.5;
+            end
             return 
         end
     end
