@@ -37,13 +37,13 @@ classdef convert_coord
             
             if Y < 0
                 if Y < -100
-                    Y = Y - 3.5;
+                    Y = Y - 5;
                 else
                     Y = Y - 1.5;
                 end
             elseif Y > 0 
                 if Y > 100
-                    Y = Y + 3.5;
+                    Y = Y + 5;
                 else
                     Y = Y + 1.5;
                 end
