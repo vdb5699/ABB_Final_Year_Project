@@ -26,6 +26,8 @@ tcp.flush();
  emptySlots = emp.detectSlot(100, 70000);
  width(emptySlots)
  fig = figure;
+ imshow(im);
+ hold on;
  for x = 1 : width(emptySlots)
     plot(emptySlots(x).centre(1),emptySlots(x).centre(2),'ro','MarkerSize', 15);
     plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2),'ro','MarkerSize', 40);
