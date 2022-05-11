@@ -13,15 +13,17 @@ classdef empty_slot_detection
 
         function slotList = detectSlot(obj,brightness, areaSize)
             gray = rgb2gray(obj.image);
+            imshow(gray)
             %turn gray image into binary image (brightness > 100 will be
             %white and <= 100 will be black. The value would differ
             %depending on brightness of image.
-            bIm = gray > brightness;
+            bIm = gray < brightness;
             fig2 = figure('Name','Empty slots')
-            imshow(obj.image)
+            imshow(bIm);
             hold on;
             %clear out small areas for better and easier detection
-            bIm = bwareaopen(bIm,areaSize);
+            bIm = bwareaopen(imfill(bIm,'holes'),areaSize);
+%             imshow(bIm);
             [labIm numOb] = bwlabel(bIm);
             blob = regionprops(labIm,'Perimeter','Area', 'Centroid');
 
@@ -29,8 +31,16 @@ classdef empty_slot_detection
             ar = [blob.Area];
             centr = [blob.Centroid];
             peri = [blob.Perimeter];
-            circul = peri .^2./ (4* pi * ar);
+            circul = peri .^2./ (4* pi * ar)
             slotList = eliminateCaps(obj,ar,circul,centr, boundaries);
+%             d = drawline;
+%             pos = d.Position;
+%             diffPos = diff(pos);
+%             Width = hypot(diffPos(1),diffPos(2))
+%             d = drawline;
+%             pos = d.Position;
+%             diffPos = diff(pos);
+%             height = hypot(diffPos(1),diffPos(2))
             return
         end
 
@@ -41,15 +51,15 @@ classdef empty_slot_detection
             for objectNumber = 1: length(areas)
                 bound = boundaries{objectNumber};
 
-                if ((cir(objectNumber) > 1.3) && (cir(objectNumber) < 2.0)) 
+%                   if ((cir(objectNumber) > 1.5) && (cir(objectNumber) < 3.0)) 
                     plot(bound(:,2),bound(:,1),'r',LineWidth=3);
                     currentCen = [cen((objectNumber*2)-1) cen(objectNumber*2)]
                     plot(currentCen(1),currentCen(2),'ro','MarkerSize', 30);
                     compList(counter) = EmptySlot([cen((objectNumber*2)-1) cen(objectNumber*2)]) 
-
                     counter = counter+1;
-                end
-            end
+% 
+%                  end
+             end
             return
         end
     end

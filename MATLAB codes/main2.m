@@ -31,3 +31,34 @@ Z = (536.24*0.029)/(66)
 X = ((358-638.09)*Z)/536.24
 Y = ((477 - 342.0275)*Z)/536.18
 
+%%
+conv = convert_coord();
+[x, y] = conv.convertBox(1001, 485)
+
+%%
+b = photo_acquisition();
+res = "2560x720";
+img = b.takePhoto(res,1);
+figue = figure
+imshow(img)
+hold on
+% d = drawline;
+% pos = d.Position;
+% diffPos = diff(pos);
+% diameter = hypot(diffPos(1),diffPos(2))
+emp = empty_slot_detection(img);
+emptySlots = emp.detectSlot(100, 70000)
+% fig = figure;
+% imshow(img);
+% hold on 
+% for x = 1 : width(emptySlots)
+%     plot(emptySlots(x).centre(1),emptySlots(x).centre(2),'ro','MarkerSize', 15);
+%     plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2),'ro','MarkerSize', 40);
+%     plot(emptySlots(x).centre(1)-70,emptySlots(x).centre(2),'ro','MarkerSize', 40);
+%     plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2)+140,'ro','MarkerSize', 40);
+%     plot(emptySlots(x).centre(1)-70,emptySlots(x).centre(2)+140,'ro','MarkerSize', 40);    
+%     plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2)-140,'ro','MarkerSize', 40);
+%     plot(emptySlots(x).centre(1)-70,emptySlots(x).centre(2)-140,'ro','MarkerSize', 40);    
+% end
+% 
+
