@@ -23,7 +23,7 @@ tcp.flush();
  tcp.flush();
 
  emp = empty_slot_detection(im);
- emptySlots = emp.detectSlot(100, 70000);
+ emptySlots = emp.detectSlot(116, 90000);
  width(emptySlots)
  fig = figure;
  imshow(im);
@@ -45,6 +45,7 @@ tcp.flush();
     [slots(x,11), slots(x,12)] = converter.convertBox((emptySlots(x).centre(1)+70), (emptySlots(x).centre(2)-140)); 
 
 end
+
 
 
  while flag == 0
@@ -159,7 +160,7 @@ end
     tcp.flush()
     pause(2.5)
 
-    xBox = slots(2,(x*2)-1);
+    xBox = slots(2,(y*2)-1);
     xcoord = num2str(xBox);
     msg = ['sending x value (Box): ',xcoord];
     disp(msg);
@@ -167,7 +168,7 @@ end
     tcp.flush()
     pause(2.5)
         
-    yBox = slots(1,x*2);
+    yBox = slots(2,y*2);
     ycoord = num2str(yBox);
     msg = ['sending y value (Box): ',ycoord];
     disp(msg);
