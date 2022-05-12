@@ -33,11 +33,10 @@ classdef convert_coord
         end
 
         function [X, Y] = convertBox(obj, x, y)
-            y
-            Xtemp = ((0.0779*x) - 52.039)*10;
-            Ytemp = ((-0.0784*y) + 28.059)* 10
+            X = ((0.0776*x) - 52.877)*10
+            Y = ((-0.0782*y) + 28.048)*10
 
-            [X, Y] = toRobCoordB(obj, Xtemp, Ytemp);
+%             [X, Y] = toRobCoordB(obj, Xtemp, Ytemp);
             return
         end
 
@@ -53,12 +52,12 @@ classdef convert_coord
             end
             return 
         end
-
-        function [X, Y] = toRobCoordB(obj, x, y)
-            X = -x;
-            Y = y
-            return
-        end
+% 
+%         function [X, Y] = toRobCoordB(obj, x, y)
+%             X = -x;
+%             Y = y;
+%             return
+%         end
 
 
 
