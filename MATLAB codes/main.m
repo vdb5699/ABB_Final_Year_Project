@@ -30,19 +30,19 @@ tcp.flush();
  hold on;
  for x = 1 : width(emptySlots)
     plot(emptySlots(x).centre(1),emptySlots(x).centre(2),'ro','MarkerSize', 15);
-    plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2),'ro','MarkerSize', 40);
-    plot(emptySlots(x).centre(1)-70,emptySlots(x).centre(2),'ro','MarkerSize', 40);
-    plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2)+140,'ro','MarkerSize', 40);
-    plot(emptySlots(x).centre(1)-70,emptySlots(x).centre(2)+140,'ro','MarkerSize', 40);    
-    plot(emptySlots(x).centre(1)+70,emptySlots(x).centre(2)-140,'ro','MarkerSize', 40);
-    plot(emptySlots(x).centre(1)-70,emptySlots(x).centre(2)-140,'ro','MarkerSize', 40);    
+    plot(emptySlots(x).centre(1),emptySlots(x).centre(2)+70,'ro','MarkerSize', 40);
+    plot(emptySlots(x).centre(1),emptySlots(x).centre(2)-70,'ro','MarkerSize', 40);
+    plot(emptySlots(x).centre(1)+140,emptySlots(x).centre(2)+70,'ro','MarkerSize', 40);
+    plot(emptySlots(x).centre(1)-140,emptySlots(x).centre(2)+70,'ro','MarkerSize', 40);    
+    plot(emptySlots(x).centre(1)+140,emptySlots(x).centre(2)-70,'ro','MarkerSize', 40);
+    plot(emptySlots(x).centre(1)-140,emptySlots(x).centre(2)-70,'ro','MarkerSize', 40);    
     
-    [slots(x,1), slots(x,2)] = converter.convertBox((emptySlots(x).centre(1)-70), (emptySlots(x).centre(2)+140));
-    [slots(x,3), slots(x,4)] = converter.convertBox((emptySlots(x).centre(1)+70), (emptySlots(x).centre(2)+140));
-    [slots(x,5), slots(x,6)] = converter.convertBox((emptySlots(x).centre(1)-70), emptySlots(x).centre(2));
-    [slots(x,7), slots(x,8)] = converter.convertBox((emptySlots(x).centre(1)+70), emptySlots(x).centre(2));
-    [slots(x,9), slots(x,10)] = converter.convertBox((emptySlots(x).centre(1)-70), (emptySlots(x).centre(2)-140));
-    [slots(x,11), slots(x,12)] = converter.convertBox((emptySlots(x).centre(1)+70), (emptySlots(x).centre(2)-140)); 
+    [slots(x,1), slots(x,2)] = converter.convertBox((emptySlots(x).centre(1)-140), (emptySlots(x).centre(2)+70));
+    [slots(x,3), slots(x,4)] = converter.convertBox((emptySlots(x).centre(1)+140), (emptySlots(x).centre(2)+70));
+    [slots(x,5), slots(x,6)] = converter.convertBox((emptySlots(x).centre(1)), emptySlots(x).centre(2)+70);
+    [slots(x,7), slots(x,8)] = converter.convertBox((emptySlots(x).centre(1)), emptySlots(x).centre(2)-70);
+    [slots(x,9), slots(x,10)] = converter.convertBox((emptySlots(x).centre(1)-140), (emptySlots(x).centre(2)-70));
+    [slots(x,11), slots(x,12)] = converter.convertBox((emptySlots(x).centre(1)+140), (emptySlots(x).centre(2)-70)); 
 
 end
 
