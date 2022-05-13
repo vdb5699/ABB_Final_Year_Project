@@ -32,7 +32,7 @@ classdef colour_detection
                             goldCount = goldCount +1
                         elseif (r >= 200) && (g <= 220 && g >= 60)&& (b >= 60 && b < 230)
                             redCount = redCount +1
-                        elseif (r <= 200 && r >= 125) && (g<= 160 && g >= 90) && (b <= 100)
+                        elseif (r <= 200 && r >= 130) && (g<= 160 && g >= 90) && (b <= 100)
                             goldCount = goldCount +1
                         elseif (r >= 160 && r <= 220) && (g <= 100) && (b <= 100)
                             redCount = redCount +1
