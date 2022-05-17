@@ -4,6 +4,7 @@ classdef photo_acquisition
             camera = webcam(camID);
             camera.Resolution = resolution;
             [height width channels] = size(snapshot(camera));
+            % preview(camera)
 
             prompt = "Press enter key to take photo";
 

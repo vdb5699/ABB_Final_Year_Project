@@ -23,17 +23,18 @@ classdef colour_detection
                 yStart = obj.centres(index,2)-2;
                 yEnd = obj.centres(index,2)+2;
                 redCount = 0;
-                goldCount = 0;
+                brownCount = 0;
                 neither = 0;
                 for yCood = yStart:yEnd
                     for xCood = xStart:xEnd
                         [r,g,b] = obj.getColour(xCood,yCood);
+                        %checking the RGB values of pixels
                         if (r <= 255 && r >= 195) && (g <= 255 && g >= 160) && (b <= 150)
-                            goldCount = goldCount +1
+                            brownCount = brownCount +1
                         elseif (r >= 200) && (g <= 220 && g >= 60)&& (b >= 60 && b < 230)
                             redCount = redCount +1
                         elseif (r <= 200 && r >= 130) && (g<= 160 && g >= 85) && (b <= 100)
-                            goldCount = goldCount +1
+                            brownCount = brownCount +1
                         elseif (r >= 160 && r <= 220) && (g <= 100) && (b <= 100)
                             redCount = redCount +1
                         else 
@@ -41,17 +42,13 @@ classdef colour_detection
                         end
                     end
                 end
-                if redCount == goldCount 
+                if redCount == brownCount 
                     capList(index) = Cap([obj.centres(index,1) obj.centres(index,2)], "Unknown")
-                elseif redCount > goldCount
+                elseif redCount > brownCount
                     capList(index) = Cap([obj.centres(index,1) obj.centres(index,2)], "Red")
                 else 
-                    capList(index) = Cap([obj.centres(index,1) obj.centres(index,2)], "Gold")
+                    capList(index) = Cap([obj.centres(index,1) obj.centres(index,2)], "Brown")
                 end
-                %for debugging
-%                 goldCount
-%                 redCount
-%                 neither
            end
            return
        end
