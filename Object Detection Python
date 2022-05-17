@@ -5,23 +5,13 @@ import math
 import numpy as np
 import socket
 import time
-import pyzed.sl as sl
-import cv2
-import sys
-import math
-import numpy as np
-import socket
-import time
+
+
 
 zed = sl.Camera()
-
-mi_socket=socket.socket()
-#Controller IP
-mi_socket.connect(("192.168.0.20",5000))
-
 #AUT IP
-#mi_socket.connect(("172.16.44.240",5000))
-
+mi_socket=socket.socket
+mi_socket.connect(("192.168.0.20",1025))
 
 message=mi_socket.recv(1024)
 print(message.decode())
@@ -29,13 +19,12 @@ print(message.decode())
 
 # Camera Configuration
 def initial_Camera():
+    # Create a ZED camera object
+
+    # Set configuration parameters
     init_params = sl.InitParameters()
     init_params.camera_resolution = sl.RESOLUTION.HD720
     init_params.camera_fps = 60
-
-    # Using Depth Sensing configuration
-    init_params.depth_mode = sl.DEPTH_MODE.PERFORMANCE
-    init_params.coordinate_units = sl.UNIT.MILLIMETER
 
     # Open the camera
     err = zed.open(init_params)
@@ -48,46 +37,24 @@ def initial_Camera():
 
 
 # Detect object and return pixel (x,y)
-def grab_Image(flag,coordinatelist):
+def grab_Image(flag):
     if flag == 0:
         img = sl.Mat()
         runtime_parameters = sl.RuntimeParameters()
 
         if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-            # A new image and depth is available if grab() returns SUCCESS
+            # A new image  is available if grab() returns SUCCESS
             zed.retrieve_image(img, sl.VIEW.LEFT)  # Retrieve left image
             # Convert the Retrieve image into Numpy array
             num_img = img.get_data()
             cv2.imshow("Original image", num_img)
-
-    # if flag == 1:
-    #     image = sl.Mat()
-    #     depth = sl.Mat()
-    #     point_cloud = sl.Mat()
-    #     runtime_parameters = sl.RuntimeParameters()
-    #     if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-    #         # A new image is available if grab() returns sl.ERROR_CODE.SUCCESS
-    #         zed.retrieve_image(image, sl.VIEW.LEFT)  # Get the left image
-    #         zed.retrieve_measure(depth, sl.MEASURE.DEPTH) # Retrieve depth matrix. Depth is aligned on the left RGB image
-    #         zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA) # Retrieve colored point cloud
-    #         num_img = image.get_data()
-    #         cv2.imshow("Original image", num_img)
-    #         for i in range(len(coordinatelist)):
-    #             x=coordinatelist[i][0]
-    #             y=coordinatelist[i][-1]
-    #             depth_value = depth.get_value(x, y)
-    #             print("Distance to Camera at ({0}, {1}): {2} mm".format(x, y, depth_value))
-
+        else:
+            print('Camera parameter is not set correctly!')
 
     #Save Bottle image
     if cv2.waitKey(1) & 0XFF == ord('b'):
         cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles.png', num_img)
         print('Bottle Image Saved')
-
-    #Save Carton box image
-    if cv2.waitKey(1) & 0XFF == ord('c'):
-        cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/Box.png', num_img)
-        print('Box Image Saved')
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
         zed.close()
@@ -97,38 +64,28 @@ def grab_Image(flag,coordinatelist):
 
 
 def object_detection():
-    print("Please select object to be detected:\n 1.Brown Cap Bottle\n 2.Coke Bottle\n 3.Carton Box")
+    print("Please select object to be detected:\n 1.Syrup Bottle\n 2.Coke Bottle")
     num = int(input())
     if num == 1:
         print('Detecting Brown Cap Bottle...')
-        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/1.png', 0)
+        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/BrownCap.png', 0)
         w, h = template.shape[::-1]
         return template, w, h, num
-    if num == 2:
+    elif num == 2:
         print('Detecting Coke Bottle...')
-        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/CokeBottle.png', 0)
+        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/CokeCap.png', 0)
         w, h = template.shape[::-1]
         return template, w, h, num
-    if num == 3:
-        print('Detecting Carton Box...')
-        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/Dot.png', 0)
-        w, h = template.shape[::-1]
-        return template, w, h, num
-    elif num != 1 and num != 2 and num != 3:
+
+    else:
         print('Invalid input')
-        print('Exit...')
+        print('Exiting...')
 
 
 
-
-
-def template_matching(temp, w, h, previous_x, previous_y, coordlist, number, boxcoord):
-    print(number)
+def template_matching(temp, w, h, previous_x, previous_y, coordlist, number):
     if number == 1 or number == 2:
         print('Detecting bottles....')
-        centrex_real=1228/2
-        centrey_real=690/2
-        point_cloud = sl.Mat()
         bottleimg = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles.png')
 
         # Template Matching
@@ -156,97 +113,37 @@ def template_matching(temp, w, h, previous_x, previous_y, coordlist, number, box
                     cv2.putText(bottleimg, '{},{}'.format(center_x, center_y), (pt[0], pt[1] - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1, cv2.LINE_AA)
 
-                    # Calculate the Coordinate in real live
-                    center_x=center_x/1280*1228.2
-                    center_y=center_y/720*690
-                    #Move robot from New Origin
-                    new_center_x=center_x-centrex_real
-                    new_center_y=center_y-centrey_real
-                    #Convert the camera coordinate system to robot system
-                    Y=-new_center_x
-                    X=-new_center_y
+                    # Calculate the Coordinate for syrup in real live
+                    if number == 1:
+                        real_x=0.0394*center_x-28.825
+                        real_y=-0.04*center_y+14.236
 
+                        #Convert the camera coordinate system to robot system
+                        X= real_y*10
+                        Y= -real_x*10
+                        coordlist.append([X,Y])
 
-                    # Measure the distance of a point in the scene represented by pixel (i,j)
-                    # zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA)
-                    # Get the 3D point cloud values for pixel (i,j)
-                    # point3D = point_cloud.get_value(center_x, center_y)
-                    # point3D_value=point3D[1]
-                    # x = point3D_value[0]
-                    # y = point3D_value[1]
-                    # z = point3D_value[2]
-                    # color = point3D_value[3]
-                    # z_distance = math.sqrt(x*x + y*y + z*z)
-                    coordlist.append([X,Y])
-                    # print('z coordinate:' +str(z_distance)+'mm')
+                    # Calculate the Coordinate for coke in global frame
+                    if number == 2:
+                        real_x=0.0491*center_x-34.598
+                        real_y=-0.0496*center_y+17.501
+
+                        #Convert the camera coordinate system to robot system
+                        X= real_y*10
+                        Y= -real_x*10
+                        coordlist.append([X,Y])
 
         if len(coordlist) > 0:
-            cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles_test.png', bottleimg)
+            cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles_detected.png', bottleimg)
             print('Bottles Detected image saved')
 
         return coordlist
-
-    if number == 3:
-        print('Detecting Box....')
-        point_cloud = sl.Mat()
-        boximg = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/Box.png')
-        # Template Matching
-        tempBlur = cv2.medianBlur(temp, 5)
-        gray_img = cv2.cvtColor(boximg, cv2.COLOR_BGR2GRAY)
-        res = cv2.matchTemplate(gray_img, tempBlur, cv2.TM_CCOEFF_NORMED)
-        threshold = 0.8
-        loc = np.where(res >= threshold)
-        for pt in zip(*loc[::-1]):
-            #cv2.rectangle(boximg, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-            center_x = pt[0] + round(w / 2)
-            center_y = pt[1] + round(h / 2)
-            cv2.circle(boximg, (center_x, center_y), 3, (0, 255, 0), -1)
-            boxcoord.append([center_x, center_y])
-            # # Collect coordinate x,y
-            # if center_x != previous_x or center_y != previous_y:
-            #
-            #     error_x = abs(previous_x - center_x)
-            #     error_y = abs(previous_y - center_y)
-            #     if error_x > 10 and error_y > 10:
-            #         previous_x = center_x
-            #         previous_y = center_y
-            #         print('x coordinate:' + str(center_x), '   y coordinate:' + str(center_y))
-            #
-            #         cv2.putText(boximg, '{},{}'.format(center_x, center_y), (pt[0], pt[1] - 10),
-            #                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1, cv2.LINE_AA)
-            #
-            #         # Calculate the Coordinate in real lift
-            #         center_x=center_x*0.0354
-            #         center_y=center_y*0.0354
-            #
-            #         # Measure the distance of a point in the scene represented by pixel (i,j)
-            #         # zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA)
-            #         # Get the 3D point cloud values for pixel (i,j)
-            #         # point3D = point_cloud.get_value(center_x, center_y)
-            #         # point3D_value=point3D[1]
-            #         # x = point3D_value[0]
-            #         # y = point3D_value[1]
-            #         # z = point3D_value[2]
-            #         # color = point3D_value[3]
-            #         # z_distance = math.sqrt(x*x + y*y + z*z)
-            #         coordlist.append([center_x, center_y])
-            #         # print('z coordinate:' +str(z_distance)+'mm')
-
-        if len(boxcoord) > 0:
-            cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/cartonbox_test.png', boximg)
-            print('Carton Box Detected image saved')
-
-        return boxcoord
-
-
 
 
 
 
 def main(args):
     looping = True
-    anotherloop=True
-    flag = 0
     bottle_coordinate_list = []
     boxcoordinate_list=[]
     x_origin, y_origin = 0, 0
@@ -262,18 +159,6 @@ def main(args):
     temp, w, h, number = object_detection()
     bottle_coordinate_list = template_matching(temp, w, h, x_origin, y_origin, bottle_coordinate_list,number,boxcoordinate_list)
     print(bottle_coordinate_list)
-
-    # #Capture Box image
-    # initial_Camera()
-    # while anotherloop:
-    #     flag=0
-    #     flag=grab_Image(flag,bottle_coordinate_list)
-    #     if flag == 1:
-    #         anotherloop=False
-    # temp, w, h, number = object_detection()
-    # box_coordinate_list = template_matching(temp, w, h, x_origin, y_origin, bottle_coordinate_list,number,boxcoordinate_list)
-    # print(box_coordinate_list)
-
 
     #==============================================================#
     # Transferring Data
@@ -296,188 +181,8 @@ def main(args):
         message=mi_socket.recv(1024)
         if message.decode()=='Y':
             continue
-    print('Program ended')
 
-
-if __name__ == '__main__':
-    main(sys.argv)
-
-
-mi_socket=socket.socket()
-# mi_socket.connect(("192.168.1.32",5000))
-
-mi_socket.connect(("172.30.65.132",5000))
-message=mi_socket.recv(1024)
-print(message.decode())
-# Camera Configuration
-def initial_Camera():
-    init_params = sl.InitParameters()
-    init_params.camera_resolution = sl.RESOLUTION.HD2K
-    init_params.camera_fps = 15
-
-    # Using Depth Sensing configuration
-    init_params.depth_mode = sl.DEPTH_MODE.PERFORMANCE
-    init_params.coordinate_units = sl.UNIT.MILLIMETER
-
-    # Open the camera
-    err = zed.open(init_params)
-    if err != sl.ERROR_CODE.SUCCESS:
-        print('Camera is not detected')
-        exit(-1)
-
-    print('Camera initialized')
-    print('Start Capturing image...')
-
-
-def object_detection():
-    print("Please select object to be detected:\n 1.Brown Cap Bottle\n 2.Coke Bottle")
-    num = int(input())
-    if num == 1:
-        print('Detecting Brown Cap Bottle...')
-        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/1.png', 0)
-        w, h = template.shape[::-1]
-        return template, w, h
-    if num == 2:
-        print('Detecting Coke Bottle...')
-        template = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/CokeBottle.png', 0)
-        w, h = template.shape[::-1]
-        return template, w, h
-
-    elif num != 1 & num != 2:
-        print('Invalid input')
-        print('Exit...')
-
-
-# Detect object and return pixel (x,y)
-def grab_Image(flag,coordinatelist):
-    if flag == 0:
-        img = sl.Mat()
-        runtime_parameters = sl.RuntimeParameters()
-
-        if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-            # A new image and depth is available if grab() returns SUCCESS
-            zed.retrieve_image(img, sl.VIEW.LEFT)  # Retrieve left image
-            # Convert the Retrieve image into Numpy array
-            num_img = img.get_data()
-            cv2.imshow("Original image", num_img)
-
-
-    # if flag == 1:
-    #     image = sl.Mat()
-    #     depth = sl.Mat()
-    #     point_cloud = sl.Mat()
-    #     runtime_parameters = sl.RuntimeParameters()
-    #     if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-    #         # A new image is available if grab() returns sl.ERROR_CODE.SUCCESS
-    #         zed.retrieve_image(image, sl.VIEW.LEFT)  # Get the left image
-    #         zed.retrieve_measure(depth, sl.MEASURE.DEPTH) # Retrieve depth matrix. Depth is aligned on the left RGB image
-    #         zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA) # Retrieve colored point cloud
-    #         num_img = image.get_data()
-    #         cv2.imshow("Original image", num_img)
-    #         for i in range(len(coordinatelist)):
-    #             x=coordinatelist[i][0]
-    #             y=coordinatelist[i][-1]
-    #             depth_value = depth.get_value(x, y)
-    #             print("Distance to Camera at ({0}, {1}): {2} mm".format(x, y, depth_value))
-
-    if cv2.waitKey(1) & 0XFF == ord('s'):
-        cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles.png', num_img)
-        print('Image Saved')
-
-    if cv2.waitKey(10) & 0xFF == ord('q'):
-        zed.close()
-        cv2.destroyAllWindows()
-        flag = 1
-        return flag
-
-
-def template_matching(temp, w, h, previous_x, previous_y, coordlist):
-    print('Detecting bottles....')
-    point_cloud = sl.Mat()
-    bottleimg = cv2.imread('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles.png')
-
-    # Template Matching
-    tempBlur = cv2.medianBlur(temp, 5)
-    gray_img = cv2.cvtColor(bottleimg, cv2.COLOR_BGR2GRAY)
-    res = cv2.matchTemplate(gray_img, tempBlur, cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
-    loc = np.where(res >= threshold)
-    for pt in zip(*loc[::-1]):
-        cv2.rectangle(bottleimg, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-        center_x = pt[0] + round(w / 2)
-        center_y = pt[1] + round(h / 2)
-        cv2.circle(bottleimg, (center_x, center_y), 3, (0, 255, 0), -1)
-
-        # Collect coordinate x,y
-        if center_x != previous_x or center_y != previous_y:
-
-            error_x = abs(previous_x - center_x)
-            error_y = abs(previous_y - center_y)
-            if error_x > 10 and error_y > 10:
-                previous_x = center_x
-                previous_y = center_y
-                print('x coordinate:' + str(center_x), '   y coordinate:' + str(center_y))
-
-                cv2.putText(bottleimg, '{},{}'.format(center_x, center_y), (pt[0], pt[1] - 10),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1, cv2.LINE_AA)
-                # Measure the distance of a point in the scene represented by pixel (i,j)
-                # zed.retrieve_measure(point_cloud, sl.MEASURE.XYZRGBA)
-                # Get the 3D point cloud values for pixel (i,j)
-                # point3D = point_cloud.get_value(center_x, center_y)
-                # point3D_value=point3D[1]
-                # x = point3D_value[0]
-                # y = point3D_value[1]
-                # z = point3D_value[2]
-                # color = point3D_value[3]
-                # z_distance = math.sqrt(x*x + y*y + z*z)
-                coordlist.append([center_x, center_y])
-                # print('z coordinate:' +str(z_distance)+'mm')
-
-    if len(coordlist) > 0:
-        cv2.imwrite('/Users/iamvi/PycharmProjects/FinalYearProject/Template_img/bottles_test.png', bottleimg)
-        print('Bottle Detected image saved')
-
-    return coordlist
-
-
-
-
-def main(args):
-    looping = True
-    flag = 0
-    bottle_coordinate_list = []
-    x_origin, y_origin = 0, 0
-    initial_Camera()
-    while looping:
-        # Grab an image when robot is in position
-        flag=0
-        flag = grab_Image(flag,bottle_coordinate_list)
-        if flag == 1:
-            looping = False
-
-    temp, w, h = object_detection()
-    bottle_coordinate_list = template_matching(temp, w, h, x_origin, y_origin, bottle_coordinate_list)
-    print(bottle_coordinate_list)
-
-    # initial_Camera()
-    # while flag==1:
-    #     grab_Image(flag,bottle_coordinate_list)
-
-
-    # num_objects=str(len(bottle_coordinate_list))
-    # mi_socket.send(num_objects.encode())
-    #Ask the robot to send the feedback from Robotsudio when one bottle is placed in the box
-    for i in range(len(bottle_coordinate_list)):
-        for a in range(len(bottle_coordinate_list[i])):
-
-            print(str(bottle_coordinate_list[i][a]))
-            string=str(bottle_coordinate_list[i][a])
-            mi_socket.send(string.encode())
-            time.sleep(1.5)
-        print('Ready to grab next object? (Y/N)')
-        #message=mi_socket.recv(1024)
-        if message.decode()=='Y':
-            continue
+    mi_socket.close()
     print('Program ended')
 
 
