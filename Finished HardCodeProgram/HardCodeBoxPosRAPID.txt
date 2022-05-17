@@ -157,7 +157,7 @@ MODULE MainModule
     ENDPROC
     
     PROC moveToHome()
-         MoveL Home,v300,fine,tool0\WObj:=wobj0;
+         MoveJ Home,v300,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveToCameraPos()
