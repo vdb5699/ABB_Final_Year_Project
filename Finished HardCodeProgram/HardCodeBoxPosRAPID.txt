@@ -5,8 +5,8 @@ MODULE MainModule
     CONST robtarget moveToBoxAbv:=[[0,945,1375],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget BoxEdgeAbove:=[[-330,780,1375],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget BoxEdge:=[[-330,780,695],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget stackBoxAbove:=[[110,780,1375],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget stackBoxOnTop:=[[110,780,1005],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget stackBoxAbove:=[[110,777,1375],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget stackBoxOnTop:=[[110,777,1005],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !110mm for each dot point along x axis and y axis
     CONST robtarget abovesryupMoveToBoxPos1:=[[0,945,1045],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget abovesryupMoveToBoxPos2:=[[110,945,1045],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -89,7 +89,7 @@ MODULE MainModule
             placeBottle2box;
             open_gripper;
             boxAbvpos;
-            moveToCameraPos;
+            moveFastToCameraPos;
             SocketSend client,\Str :="Y";
             sum:=sum+1;
         ENDWHILE
@@ -117,6 +117,7 @@ MODULE MainModule
         coke:=StrToVal(num_coke,n_coke);
         
     ENDPROC
+	
     PROC receiveData()
         SocketReceive client,\Str :=colour;
         SocketReceive client,\Str :=x_coordinate;
@@ -161,7 +162,11 @@ MODULE MainModule
     ENDPROC
     
     PROC moveToCameraPos()
-        MoveL CameraPos,v300,fine,tool0\WObj:=wobj0;
+        MoveL CameraPos,v200,fine,tool0\WObj:=wobj0;
+    ENDPROC
+	
+	PROC moveFastToCameraPos()
+        MoveL CameraPos,v500,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveAboveToCameraPos()
