@@ -2,7 +2,11 @@ MODULE MainModule
 	!Constant position (Please Do not Change it)
     CONST robtarget Home:=[[1018.612159322,0,1417.5],[0.5,0,0.866025404,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
 !    CONST robtarget CameraPos:=[[888.647981627,-3.101979233,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget CameraPos:=[[720.27,-720.27, 1417.5],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+!    CONST robtarget CameraPos:=[[595.6,-367-628.37,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+!	New Positions Start
+    CONST robtarget CameraPos:= [[553.2, -553.2, 1306.2],[0.04093,-0.38936,-0.92003, 0.01659],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget AboveBoxPos:= [[544.9, 544.7, 1480.4],[0.03464, -0.37528, -0.92615, 0.01464],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]]; 
+!	New Positions End
     CONST robtarget moveToBoxAbv:=[[0,945,1375],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget BoxEdgeAbove:=[[-330,780,1375],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget BoxEdge:=[[-330,780,695],[-0.000000048,1,0.00000002,-0.000000013],[1,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -75,6 +79,10 @@ MODULE MainModule
         syrup_counter:=0;
         coke_counter:=0;
         moveToHome;
+        Waittime 2;
+!        moveToAboveBoxPos;
+        Waittime 2;
+        moveToCameraPos;
 !        moveToCameraPos;
 !        open_gripper;
 !        tcpip;
@@ -162,7 +170,7 @@ MODULE MainModule
     ENDPROC
     
     PROC moveToCameraPos()
-        MoveL CameraPos,v100,fine,tool0\WObj:=wobj0;
+        MoveJ CameraPos,v100,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveAboveToCameraPos()
@@ -187,6 +195,10 @@ MODULE MainModule
     
     PROC boxAbvpos()
         MoveL moveToBoxAbv,v300,fine,tool0\WObj:=wobj0;
+    ENDPROC
+    
+    PROC moveToAboveBoxPos()
+        MoveJ AboveBoxPos, v200, fine, tool0\WObj:=wobj0;
     ENDPROC
     
     PROC placeBottle2box()
