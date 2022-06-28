@@ -24,7 +24,8 @@ MODULE Module1
     CONST robtarget Home:=[[1018.612159322,0,1417.5],[0.5,0,0.866025404,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
 !    CONST robtarget CameraPos:=[[888.647981627,-3.101979233,1192.532782595],[0.004363108,0.006108556,-0.999971823,-0.000041884],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
 !	New Positions Start
-    CONST robtarget CameraPos:= [[552.8, -553.6, 1306.2],[0.02936,-0.38320,-0.92311,-0.01261],[-1,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget OldCameraPos:= [[552.8, -553.6, 1306.2],[0.02936,-0.38320,-0.92311,-0.01261],[-1,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget NewCamPos:= [[556.4, -557.2, 1306],[0.00164,-0.38341,-0.92358,-0.00113],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget AboveBoxPos:= [[544.9, 544.7, 1480.4],[0.03464, -0.37528, -0.92615, 0.01464],[-1,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]]; 
 !	New Positions End
     CONST robtarget moveToBoxAbv:=[[0,945,1375],[0,-0.707106781,0.707106781,0],[1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -217,11 +218,11 @@ MODULE Module1
 !    ENDPROC
     
     PROC moveToHome()
-         MoveJ Home,v300,fine,tool0\WObj:=wobj0;
+         MoveJ Home,v100,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveToCameraPos()
-        MoveL CameraPos,v200,fine,tool0\WObj:=wobj0;
+        MoveL NewCamPos,v100,fine,tool0\WObj:=wobj0;
     ENDPROC
     
     PROC moveToAboveBoxPos()
@@ -255,6 +256,10 @@ MODULE Module1
 !    PROC boxAbvpos()
 !        MoveL moveToBoxAbv,v300,fine,tool0\WObj:=wobj0;
 !    ENDPROC
+
+    PROC moveToTestPos()
+        MoveL TestPos,v50,fine,tool0\WObj:=wobj0;
+    ENDPROC
     
 !    PROC placeBottle2box()
 !        IF colour = "B" THEN
