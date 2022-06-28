@@ -22,18 +22,21 @@ classdef cap_detection
 
         function caps = automaticDetection(obj, image)
             radius = round(obj.diameter/2);
-            [centres, radii] = imfindcircles(image, [radius-10 radius+10], 'Sensitivity', obj.sensitivity, 'EdgeThreshold', obj.edgethresh);
+            [centres, radii] = imfindcircles(image, [radius-8 radius+8], 'Sensitivity', obj.sensitivity, 'EdgeThreshold', obj.edgethresh);
+            [centres2, radii2] = imfindcircles(image, [radius-8 radius+8], "EdgeThreshold", obj.edgethresh, Sensitivity=obj.sensitivity, ObjectPolarity="dark");
+            centres = [centres; centres2];
+            radii = [radii; radii2]
             caps = round(centres);
+%             fig = figure("Name", "detected caps", Visible="off");
             fig = figure("Name", "detected caps");
             imshow(image);
             viscircles(centres, radii);
             hold on 
             for i = 1:height(caps)
                 str = num2str(caps(i,1)) + ", "+ num2str(caps(i,2));
-                text(centres(i,1), centres(i,2), str);
+                text(centres(i,1), centres(i,2), str, 'color', 'cyan');
             end
-            hold off
-            saveas(fig,"detectedCaps")
+            saveas(fig,"detectedCaps","png")
             return
         end
 

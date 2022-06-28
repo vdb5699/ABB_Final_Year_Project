@@ -7,6 +7,13 @@ classdef photo_acquisition
        saturation
        
        webcamID
+
+       %%sat 8
+       %shar 8
+       %bright 8
+       %cont 3
+       %resolution 2k
+       
     end
     
     properties (Access = private)
@@ -22,39 +29,71 @@ classdef photo_acquisition
             obj.defResolution = defResolution;
             obj.resolution = defResolution;
             
-            obj.defBrightness = 4;
-            obj.brightness = 4;
+            obj.defBrightness = 0;
+            obj.brightness = 0;
             
-            obj.defContrast = 4;
-            obj.contrast = 4;
+            obj.defContrast = 0;
+            obj.contrast = 0;
             
-            obj.defSharpness = 0;
-            obj.sharpness = 0;
+            obj.defSharpness = 8;
+            obj.sharpness = 8;
             
-            obj.defSaturation = 4;
-            obj.saturation = 4;
+            obj.defSaturation = 8;
+            obj.saturation = 8;
             
             obj.webcamID = webcamID;
-        end
-        
-        function image = manualImageAcq(obj)
+
             camera = webcam(obj.webcamID);
+            camera.Brightness = obj.brightness;
             camera.Resolution = obj.resolution;
             camera.Contrast = obj.contrast;
             camera.Saturation = obj.saturation;
             camera.Sharpness = obj.sharpness;
+        end
+        
+        function image = manualImageAcq(obj)
+            camera = webcam(obj.webcamID);
+            camera.Brightness = obj.brightness;
+            camera.Resolution = obj.resolution;
+            camera.Contrast = obj.contrast;
+            camera.Saturation = obj.saturation;
+            camera.Sharpness = obj.sharpness;
+            camera.Gamma = 1;
             
             
             [height, width, channels] = size(snapshot(camera));
             % preview(camera)
 
-            prompt = "Press enter key to take photo";
-
-            input(prompt);
+%             prompt = "Press enter key to take photo";
+% 
+%             input(prompt);
 
             image = snapshot(camera);
             image = image(:,(width/2):width,:);
             return
+        end
+
+        function image = tempImage(obj, bright, res, cont, sat, shar)
+            camera = webcam(obj.webcamID);
+            camera.Brightness = bright;
+            camera.Resolution = res;
+            camera.Contrast = cont;
+            camera.Saturation = sat;
+            camera.Sharpness = shar;
+            camera.Gamma = 1;
+            
+            
+            [height, width, channels] = size(snapshot(camera));
+            % preview(camera)
+
+%             prompt = "Press enter key to take photo";
+% 
+%             input(prompt);
+
+            image = snapshot(camera);
+            image = image(:,(width/2):width,:);
+
+
         end
         
         function obj = setVars(obj, newRes, newBri,newCont, newSat, newShar)

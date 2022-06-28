@@ -69,7 +69,7 @@ classdef colour_detection
                elseif red > (brown + neither)
                    capList(index) = cap([caps(index, 1), caps(index,2)], "Red");
                else
-                   capList(index) = cap([caps(index, 1), caps(index,2)], "Red");
+                   capList(index) = cap([caps(index, 1), caps(index,2)], "Unknown");
                end
             end
             return
